@@ -1,0 +1,22 @@
+[
+  {
+    "name": " Sad Storie",
+    "thumbnail": "/img/images (12).jpg",
+    "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+  },
+  {
+    "name": "Jungle Adventure",
+    "thumbnail": "/img/images (13).jpg",
+    "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+  },
+  {
+    "name": "Alien Adventure",
+    "thumbnail": "/img/images (14).jpg",
+    "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+  },
+  {
+    "name": "Emotion Feel",
+    "thumbnail": "/img/images (15).jpg",
+    "video": "https://www.w3schools.com/html/mov_bbb.mp4"
+  }
+]

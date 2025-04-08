@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToonLaddo - Watch Cartoons</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; }
+    img, video { aspect-ratio: 16 / 9; object-fit: cover; }
+    .fade-in { animation: fadeIn 0.6s ease-in-out forwards; }
+    @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+    .card-animation { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-animation:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+    .premium-card {
+      background-color: #1f1f1f;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .premium-card img { height: 150px; object-fit: cover; width: 100%; }
+    .premium-card p { margin-top: 10px; text-align: center; color: white; }
+    h2 { animation: fadeIn 1s ease-in-out; }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background-color: #2a2a2a;
+      padding: 30px;
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+    .modal-content button {
+      background-color: #f44336;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .modal-content button:hover { background-color: #d32f2f; }
+    
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+    footer a:hover { color: #f44336; }
+    .bottom-nav i {
+  transition: color 0.3s;
+}
+.bottom-nav button:hover i,
+.bottom-nav button:hover span {
+  color: #f44336;
+}
+
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+  <nav class="bg-red-600 px-4 py-3 flex items-center justify-between flex-wrap md:flex-nowrap">
+    <h1 class="text-2xl font-bold text-white mb-2 md:mb-0">ToonLaddo</h1>
+    <div class="flex flex-wrap items-center gap-4">
+      <a href="#" class="text-white hover:underline">Home</a>
+      <a href="#" class="text-white hover:underline">Shows</a>
+      <a href="#" class="text-white hover:underline">Movies</a>
+      <button class="bg-white text-red-600 px-4 py-1 rounded hover:bg-gray-100 transition">Sign Up</button>
+    </div>
+  </nav>
+
+  <section class="p-6 fade-in">
+    <!-- <h2 class="text-2xl font-bold mb-4">Now Playing</h2> -->
+    <video id="banner-video" class="w-full rounded-lg shadow-lg cursor-pointer" autoplay  playsinline>
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+  </section>
+
+  <section class="p-6 fade-in">
+    <h2 class="text-3xl font-bold mb-4">Popular Shows</h2>
+    <div id="popular-shows" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <section class="p-6 fade-in">
+    <h2 class="text-3xl font-bold mb-4">Latest Releases</h2>
+    <div id="latest-content" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <section class="p-6 bg-gray-800 rounded-lg mt-6 fade-in">
+    <h2 class="text-3xl font-bold mb-4 text-center">Premium Content</h2>
+    <div id="premium-content" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </section>
+
+  <div id="subscription-modal" class="modal">
+    <div class="modal-content">
+      <h3>Subscription Required</h3>
+      <p>To view this content, please pay Rs 100 for access to this video.</p>
+      <button id="subscribe-btn">Proceed to Pay</button>
+    </div>
+  </div>
+
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="container mx-auto px-6 text-center">
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold">ToonLaddo</h2>
+        <p>Stream your favorite cartoons, shows, and animated movies all in one place.</p>
+      </div>
+      <div>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    fetch('/data/popular.json')
+      .then(res => res.json())
+      .then(shows => {
+        const container = document.getElementById('popular-shows');
+        container.innerHTML = shows.map(show => `
+          <div class="card-animation">
+            <img src="${show.url}" class="rounded-lg w-full h-40 object-cover" />
+            <p class="mt-2">${show.name}</p>
+          </div>
+        `).join('');
+      });
+
+    fetch('/data/content.json')
+      .then(res => res.json())
+      .then(items => {
+        const container = document.getElementById('latest-content');
+        container.innerHTML = items.map(item => {
+          if (item.type === 'image') {
+            return `
+              <div class="card-animation">
+                <img src="${item.url}" class="rounded-lg w-full h-40 object-cover"/>
+                <p class="mt-2">${item.name}</p>
+              </div>`;
+          } else {
+            return `
+              <div class="card-animation">
+                <video controls class="rounded-lg w-full h-40 object-cover">
+                  <source src="${item.url}" type="video/mp4">
+                </video>
+                <p class="mt-2">${item.name}</p>
+              </div>`;
+          }
+        }).join('');
+      });
+
+    fetch('/data/premium.json')
+      .then(res => res.json())
+      .then(premiumItems => {
+        const container = document.getElementById('premium-content');
+        container.innerHTML = premiumItems.map(item => `
+          <div class="premium-card card-animation" data-video-src="${item.video}">
+            <img class="rounded-lg w-full h-40 object-cover" src="${item.thumbnail}" alt="Video Thumbnail" />
+            <p class="mt-2 text-center text-white">${item.name}</p>
+          </div>
+        `).join('');
+
+        document.querySelectorAll('.premium-card').forEach(card => {
+          card.addEventListener('click', () => {
+            document.getElementById('subscription-modal').style.display = 'flex';
+          });
+        });
+      });
+
+    document.getElementById('subscribe-btn').addEventListener('click', () => {
+      alert("Payment integration coming soon! Thank you for your interest.");
+      document.getElementById('subscription-modal').style.display = 'none';
+    });
+
+    const bannerVideo = document.getElementById('banner-video');
+
+    bannerVideo.addEventListener('click', () => {
+      if (bannerVideo.paused) {
+        bannerVideo.play();
+      } else {
+        bannerVideo.pause();
+      }
+    });
+  </script>
+  
+
+  <!-- Add this just before closing </body> -->
+<div class="mt-4 bottom-nav fixed bottom-0 left-0 right-0 bg-gray-800 text-white border-t border-gray-700 flex justify-around items-center py-2 z-50 md:hidden">
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-home text-lg"></i>
+     <a href="/"> <span class="text-xs mt-1">Home</span></a>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-video text-lg"></i>
+      <a href="/shorts"><span class="text-xs mt-1">Shorts</span></a>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-fire text-lg"></i>
+      <span class="text-xs mt-1">Trending</span>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-crown text-lg"></i>
+      <a href="/premium"><span class="text-xs mt-1">Premium</span></a>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-user text-lg"></i>
+      <span class="text-xs mt-1">Profile</span>
+    </button>
+  </div>
+  
+</body>
+</html>
