@@ -81,5 +81,28 @@
       <a href="/logout" class="text-red-500 mt-4 inline-block">Logout</a>
     </div>
   </div>
+    <!-- Add this just before closing </body> -->
+<div class="mt-4 bottom-nav fixed bottom-0 left-0 right-0 bg-gray-800 text-white border-t border-gray-700 flex justify-around items-center py-2 z-50 md:hidden">
+  <button class="flex flex-col items-center text-sm focus:outline-none">
+    <i class="fas fa-home text-lg"></i>
+   <a href="/"> <span class="text-xs mt-1">Home</span></a>
+  </button>
+  <button class="flex flex-col items-center text-sm focus:outline-none">
+    <i class="fas fa-video text-lg"></i>
+    <a href="/shorts"><span class="text-xs mt-1">Shorts</span></a>
+  </button>
+  <button class="flex flex-col items-center text-sm focus:outline-none">
+    <i class="fas fa-fire text-lg"></i>
+    <span class="text-xs mt-1">Trending</span>
+  </button>
+  <button class="flex flex-col items-center text-sm focus:outline-none">
+    <i class="fas fa-crown text-lg"></i>
+    <a href="/premium"><span class="text-xs mt-1">Premium</span></a>
+  </button>
+  <!-- <button class="flex flex-col items-center text-sm focus:outline-none">
+    <i class="fas fa-user text-lg"></i>
+    <span class="text-xs mt-1">Profile</span>
+  </button> -->
+</div>
 </body>
 </html>

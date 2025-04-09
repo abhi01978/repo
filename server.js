@@ -656,6 +656,21 @@ app.get('/', (req, res) => {
   res.render('index', { files: filesData }); // Render the index page with files data
 });
 
+
+
+// // Premium page route
+app.get('/premium', (req, res) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  res.sendFile(path.join(__dirname, 'public', 'premium.html'));
+});
+
+// // Route for shorts page
+app.get('/shorts', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'shorts.html'));
+});
+
 // Start the server
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
