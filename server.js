@@ -438,6 +438,253 @@
 // });
 
 
+// const express = require('express');
+// const multer = require('multer');
+// const fs = require('fs');
+// const path = require('path');
+// const app = express();
+// const session = require('express-session');
+// const bcrypt = require('bcryptjs');
+// app.set('view engine', 'ejs');
+
+// // Middleware to serve static files like images and videos
+// app.use(express.static('public'));
+// app.use('/uploads', express.static('uploads')); // Serve files from 'uploads' folder
+// app.use('/images', express.static('public/images'));
+// app.use('/data', express.static('data')); // Ensure data folder is public
+
+// // Middleware to parse form data and JSON
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+
+// // Session configuration
+// app.use(session({
+//   secret: 'your-secret-key',
+//   resave: false,
+//   saveUninitialized: true
+// }));
+
+// // Path to user data file (users.json)
+// const usersFilePath = 'data/users.json';
+
+// // Helper function to read the users.json file
+// const readUsersFromFile = () => {
+//   if (fs.existsSync(usersFilePath)) {
+//     const rawData = fs.readFileSync(usersFilePath, 'utf8');
+//     return JSON.parse(rawData);
+//   }
+//   return [];
+// };
+
+// // Helper function to write to the users.json file
+// const writeUsersToFile = (users) => {
+//   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+// };
+
+// // Storage configuration for multer to handle file uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     // Ensure that files are saved in the 'uploads' directory
+//     const uploadsDir = path.join(__dirname, 'uploads');
+//     if (!fs.existsSync(uploadsDir)) {
+//       fs.mkdirSync(uploadsDir); // Create the uploads directory if it doesn't exist
+//     }
+//     cb(null, uploadsDir); // Save to 'uploads' folder
+//   },
+//   filename: (req, file, cb) => {
+//     // Naming the file with a timestamp and the original file name
+//     cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
+
+// // Initialize multer with the defined storage
+// const upload = multer({ storage });
+
+// // Route for the signup page
+// app.get('/signup', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'signup.html'));
+// });
+
+// // Handle user signup
+// app.post('/signup', upload.single('profileImage'), async (req, res) => {
+//   const { username, email, password } = req.body;
+
+//   // Handle the profile image if uploaded
+//   const profileImage = req.file ? '/uploads/' + req.file.filename : '/uploads/default.jpg'; // Default image if no profile is uploaded
+
+//   // Read users from file
+//   const users = readUsersFromFile();
+
+//   // Check if the user already exists
+//   const existingUser = users.find(user => user.email === email);
+//   if (existingUser) {
+//     return res.status(400).send('User already exists. Please log in.');
+//   }
+
+//   // Hash the password before storing
+//   const hashedPassword = await bcrypt.hash(password, 10);
+//   const newUser = { username, email, password: hashedPassword, profileImage }; // Add profileImage to the user object
+//   users.push(newUser);
+
+//   // Write the updated users list back to users.json
+//   writeUsersToFile(users);
+
+//   // Redirect to login page after successful signup
+//   res.redirect('/login');
+// });
+
+// // Route for the login page
+// app.get('/login', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'login.html'));
+// });
+
+// // Handle user login
+// app.post('/login', async (req, res) => {
+//   const { email, password } = req.body;
+
+//   // Read users from file
+//   const users = readUsersFromFile();
+
+//   // Find user by email
+//   const user = users.find(user => user.email === email);
+//   if (!user) {
+//     return res.status(400).send('User not found. Please sign up.');
+//   }
+
+//   // Compare the provided password with the stored hashed password
+//   const isPasswordValid = await bcrypt.compare(password, user.password);
+//   if (!isPasswordValid) {
+//     return res.status(400).send('Incorrect password.');
+//   }
+
+//   // Store the user session
+//   req.session.user = user;
+
+//   // Redirect to the user's profile page
+//   res.redirect('/profile');
+// });
+
+// // Route for the user's profile page
+// app.get('/profile', (req, res) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login'); // Redirect to login if user is not logged in
+//   }
+
+//   const user = req.session.user;
+//   const profileImage = user.profileImage || '/uploads/default.jpg'; // Fallback to default image if no profile image
+
+//   // Fetch user's uploaded files from files.json
+//   const filesDataPath = path.join(__dirname, 'data', 'files.json');
+//   let uploadedFiles = [];
+//   if (fs.existsSync(filesDataPath)) {
+//     uploadedFiles = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
+//   }
+
+//   // Render the profile page with user data and their uploaded files
+//   res.render('profile', { user, uploadedFiles });
+// });
+
+// // Handle file upload with title and description
+// app.post('/upload', upload.single('file'), (req, res) => {
+//   const { title, description } = req.body;
+
+//   // If file is uploaded, add file info along with title and description
+//   if (req.file) {
+//     const filePath = '/uploads/' + req.file.filename; // Path to the uploaded file
+
+//     // Create an object to store file data along with title and description
+//     const fileData = {
+//       title: title,
+//       description: description,
+//       fileUrl: filePath,
+//       type: req.file.mimetype.startsWith('video') ? 'video' : 'image' // Determine file type
+//     };
+
+//     // Read existing files data (stored in JSON)
+//     const filesDataPath = path.join(__dirname, 'data', 'files.json');
+//     let filesData = [];
+
+//     if (fs.existsSync(filesDataPath)) {
+//       filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
+//     }
+
+//     // Add the new file data to the existing list
+//     filesData.push(fileData);
+
+//     // Save the updated files data back to the JSON file
+//     fs.writeFileSync(filesDataPath, JSON.stringify(filesData, null, 2));
+
+//     // Redirect to the homepage or profile page after upload
+//     res.redirect('/');
+//   } else {
+//     res.status(400).send('No file uploaded.');
+//   }
+// });
+
+// // Logout route to destroy the session
+// app.get('/logout', (req, res) => {
+//   req.session.destroy(() => {
+//     res.redirect('/login');
+//   });
+// });
+
+// // Route to serve uploaded files (get all images/videos in the uploads folder)
+// // Fetch uploaded files with title, description, and file URL
+// // Route to fetch uploaded files (image/video metadata)
+// app.get('/uploads-list', (req, res) => {
+//   const filesDataPath = path.join(__dirname, 'data', 'files.json');
+  
+//   // Check if the file with uploaded content data exists
+//   if (fs.existsSync(filesDataPath)) {
+//     const filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
+//     res.json(filesData); // Send the list of files with title, description, and URL
+//   } else {
+//     res.status(404).send('No files found');
+//   }
+// });
+
+
+// // Route to render the homepage (index.html) with uploaded files
+// app.get('/', (req, res) => {
+//   const filesDataPath = path.join(__dirname, 'data', 'files.json');
+//   let filesData = [];
+
+//   if (fs.existsSync(filesDataPath)) {
+//     filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
+//   }
+
+//   res.render('index', { files: filesData }); // Render the index page with files data
+// });
+
+
+
+// // // Premium page route
+// app.get('/premium', (req, res) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login');
+//   }
+//   res.sendFile(path.join(__dirname, 'public', 'premium.html'));
+// });
+
+// // // Route for shorts page
+// app.get('/shorts', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public', 'shorts.html'));
+// });
+
+// // Start the server
+// app.listen(3000, () => {
+//   console.log('Server running at http://localhost:3000');
+// });
+
+
+
+
+
+
+
+
+
+
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
@@ -461,7 +708,8 @@ app.use(express.json());
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { maxAge: 3600000 } // Session expiration after 1 hour
 }));
 
 // Path to user data file (users.json)
@@ -481,24 +729,34 @@ const writeUsersToFile = (users) => {
   fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
 };
 
-// Storage configuration for multer to handle file uploads
+// Storage configuration for multer to handle file uploads with file size and type validation
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Ensure that files are saved in the 'uploads' directory
     const uploadsDir = path.join(__dirname, 'uploads');
     if (!fs.existsSync(uploadsDir)) {
       fs.mkdirSync(uploadsDir); // Create the uploads directory if it doesn't exist
     }
-    cb(null, uploadsDir); // Save to 'uploads' folder
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    // Naming the file with a timestamp and the original file name
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
 
-// Initialize multer with the defined storage
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // Limit files to 10MB
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'video/mp4'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type'), false);
+    }
+  }
+});
 
 // Route for the signup page
 app.get('/signup', (req, res) => {
@@ -508,9 +766,7 @@ app.get('/signup', (req, res) => {
 // Handle user signup
 app.post('/signup', upload.single('profileImage'), async (req, res) => {
   const { username, email, password } = req.body;
-
-  // Handle the profile image if uploaded
-  const profileImage = req.file ? '/uploads/' + req.file.filename : '/uploads/default.jpg'; // Default image if no profile is uploaded
+  const profileImage = req.file ? '/uploads/' + req.file.filename : '/uploads/default.jpg';
 
   // Read users from file
   const users = readUsersFromFile();
@@ -523,13 +779,12 @@ app.post('/signup', upload.single('profileImage'), async (req, res) => {
 
   // Hash the password before storing
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = { username, email, password: hashedPassword, profileImage }; // Add profileImage to the user object
+  const newUser = { username, email, password: hashedPassword, profileImage };
   users.push(newUser);
 
   // Write the updated users list back to users.json
   writeUsersToFile(users);
 
-  // Redirect to login page after successful signup
   res.redirect('/login');
 });
 
@@ -541,66 +796,58 @@ app.get('/login', (req, res) => {
 // Handle user login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
-  // Read users from file
   const users = readUsersFromFile();
-
-  // Find user by email
   const user = users.find(user => user.email === email);
+  
   if (!user) {
     return res.status(400).send('User not found. Please sign up.');
   }
 
-  // Compare the provided password with the stored hashed password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     return res.status(400).send('Incorrect password.');
   }
 
-  // Store the user session
-  req.session.user = user;
-
-  // Redirect to the user's profile page
+  req.session.userId = user.email; // Store only user email in session for security
   res.redirect('/profile');
 });
 
 // Route for the user's profile page
 app.get('/profile', (req, res) => {
-  if (!req.session.user) {
-    return res.redirect('/login'); // Redirect to login if user is not logged in
+  if (!req.session.userId) {
+    return res.redirect('/login');
   }
 
-  const user = req.session.user;
-  const profileImage = user.profileImage || '/uploads/default.jpg'; // Fallback to default image if no profile image
+  const users = readUsersFromFile();
+  const user = users.find(u => u.email === req.session.userId);
+  if (!user) {
+    return res.status(404).send('User not found.');
+  }
 
-  // Fetch user's uploaded files from files.json
+  const profileImage = user.profileImage || '/uploads/default.jpg';
   const filesDataPath = path.join(__dirname, 'data', 'files.json');
   let uploadedFiles = [];
+  
   if (fs.existsSync(filesDataPath)) {
     uploadedFiles = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
   }
 
-  // Render the profile page with user data and their uploaded files
   res.render('profile', { user, uploadedFiles });
 });
 
 // Handle file upload with title and description
 app.post('/upload', upload.single('file'), (req, res) => {
   const { title, description } = req.body;
-
-  // If file is uploaded, add file info along with title and description
+  
   if (req.file) {
-    const filePath = '/uploads/' + req.file.filename; // Path to the uploaded file
-
-    // Create an object to store file data along with title and description
+    const filePath = '/uploads/' + req.file.filename;
     const fileData = {
-      title: title,
-      description: description,
+      title,
+      description,
       fileUrl: filePath,
-      type: req.file.mimetype.startsWith('video') ? 'video' : 'image' // Determine file type
+      type: req.file.mimetype.startsWith('video') ? 'video' : 'image'
     };
 
-    // Read existing files data (stored in JSON)
     const filesDataPath = path.join(__dirname, 'data', 'files.json');
     let filesData = [];
 
@@ -608,14 +855,15 @@ app.post('/upload', upload.single('file'), (req, res) => {
       filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
     }
 
-    // Add the new file data to the existing list
     filesData.push(fileData);
 
-    // Save the updated files data back to the JSON file
-    fs.writeFileSync(filesDataPath, JSON.stringify(filesData, null, 2));
-
-    // Redirect to the homepage or profile page after upload
-    res.redirect('/');
+    try {
+      fs.writeFileSync(filesDataPath, JSON.stringify(filesData, null, 2));
+      res.redirect('/profile'); // Redirect to profile after file upload
+    } catch (error) {
+      console.error('Error saving file data:', error);
+      res.status(500).send('Error uploading file.');
+    }
   } else {
     res.status(400).send('No file uploaded.');
   }
@@ -628,23 +876,19 @@ app.get('/logout', (req, res) => {
   });
 });
 
-// Route to serve uploaded files (get all images/videos in the uploads folder)
-// Fetch uploaded files with title, description, and file URL
 // Route to fetch uploaded files (image/video metadata)
 app.get('/uploads-list', (req, res) => {
   const filesDataPath = path.join(__dirname, 'data', 'files.json');
-  
-  // Check if the file with uploaded content data exists
+
   if (fs.existsSync(filesDataPath)) {
     const filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
-    res.json(filesData); // Send the list of files with title, description, and URL
+    res.json(filesData);
   } else {
     res.status(404).send('No files found');
   }
 });
 
-
-// Route to render the homepage (index.html) with uploaded files
+// Route to render the homepage with uploaded files
 app.get('/', (req, res) => {
   const filesDataPath = path.join(__dirname, 'data', 'files.json');
   let filesData = [];
@@ -653,20 +897,18 @@ app.get('/', (req, res) => {
     filesData = JSON.parse(fs.readFileSync(filesDataPath, 'utf8'));
   }
 
-  res.render('index', { files: filesData }); // Render the index page with files data
+  res.render('index', { files: filesData });
 });
 
-
-
-// // Premium page route
+// Premium page route
 app.get('/premium', (req, res) => {
-  if (!req.session.user) {
+  if (!req.session.userId) {
     return res.redirect('/login');
   }
   res.sendFile(path.join(__dirname, 'public', 'premium.html'));
 });
 
-// // Route for shorts page
+// Route for shorts page
 app.get('/shorts', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'shorts.html'));
 });
