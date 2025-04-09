@@ -1,0 +1,44 @@
+[
+  {
+    "username": "abhi",
+    "email": "abh@gmail.com",
+    "password": "$2b$10$xxh89OagL3peAE4DwHPl5umAdei2WnNBGI6ugJRTZPY2Kh/pDjQza",
+    "profileImage": "/images/1744180748074-1705238195920.jpg"
+  },
+  {
+    "username": "abhi",
+    "email": "sonu@gmail.com",
+    "password": "$2b$10$EPxlCB7XnwPzl5NXZ.5u8eFVcJC86Znsl.Cz6U3DJVHjf.qUuDY9S",
+    "profileImage": "/images/1744180833952-be-your-full-stack-developer-using-react-js-node-js.jpg"
+  },
+  {
+    "username": "rahul",
+    "email": "rahul@gmail.com",
+    "password": "$2b$10$RIxsGHmXZLmuwXQpV8GMy.ABTZp9ii87Tp2q08p27ZORez1RFDn8S",
+    "profileImage": "/images/1744180980778-1705238345590.png"
+  },
+  {
+    "username": "pappu",
+    "email": "pappu@gmail.com",
+    "password": "$2b$10$zUhJbaL9aeB0eN8GcQxeN.GqtC.N6K0iiFX9X9aEYOjorAAoR97sy",
+    "profileImage": "/images/1744181660819-th (1).jpg"
+  },
+  {
+    "username": "ab",
+    "email": "sandeep0@gmail.com",
+    "password": "$2b$10$sHb8szc.nRieMtQGiqUxueToqSqo3hbPZg6xrnT3sItRcT2sy.zci",
+    "profileImage": "/images/1744181950264-1705238345590.png"
+  },
+  {
+    "username": "ww",
+    "email": "anshu@gmail.com",
+    "password": "$2b$10$FXfLrl7HJkJa7vBHueU8UOp0T93CgWvvI.T7dQli6oeLOhJQnw9gS",
+    "profileImage": "/images/1744184277152-4.jpg"
+  },
+  {
+    "username": "a",
+    "email": "a@gmail.com",
+    "password": "$2b$10$dYtbUaEm3gSwBikq/lCOT./TszXFvxlJ8IKBo85Ffg5IcEweRc/Tq",
+    "profileImage": "/images/1744186240730-ai.jpg"
+  }
+]

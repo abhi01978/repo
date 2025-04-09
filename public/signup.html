@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+         .footer-links {
+      color: #888;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .footer-links a {
+      color: #FF4747;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    .footer-links a:hover {
+      color: #fff;
+    }
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+    footer a:hover { color: #f44336; }
+    .bottom-nav i {
+  transition: color 0.3s;
+}
+.bottom-nav button:hover i,
+.bottom-nav button:hover span {
+  color: #f44336;
+}
+    </style>
+  </head>
+<body class="bg-gray-900 text-white">
+
+    <div class="flex justify-center items-center min-h-screen">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
+            <h2 class="text-3xl font-bold text-center mb-6">Signup</h2>
+            
+            <form action="/signup" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="username" class="block text-lg mb-2">Username:</label>
+                    <input type="text" id="username" name="username" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-lg mb-2">Email:</label>
+                    <input type="email" id="email" name="email" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-lg mb-2">Password:</label>
+                    <input type="password" id="password" name="password" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="profileImage" class="block text-lg mb-2">Profile Image:</label>
+                    <input type="file" id="profileImage" name="profileImage" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-red-500 rounded-lg text-white font-bold">Signup</button>
+                
+            </form>
+            <br>
+            <a href="/login"> <button type="submit" class="w-full py-2 bg-red-600 hover:bg-orange-500 rounded-lg text-white font-bold">Login</button></a>
+
+        </div>
+    </div>
+     <!-- Add this just before closing </body> -->
+<div class="mt-4 bottom-nav fixed bottom-0 left-0 right-0 bg-gray-800 text-white border-t border-gray-700 flex justify-around items-center py-2 z-50 md:hidden">
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-home text-lg"></i>
+     <a href="/"> <span class="text-xs mt-1">Home</span></a>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-video text-lg"></i>
+      <a href="/shorts"><span class="text-xs mt-1">Shorts</span></a>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-fire text-lg"></i>
+      <span class="text-xs mt-1">Trending</span>
+    </button>
+    <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-crown text-lg"></i>
+      <a href="/premium"><span class="text-xs mt-1">Premium</span></a>
+    </button>
+    <!-- <button class="flex flex-col items-center text-sm focus:outline-none">
+      <i class="fas fa-user text-lg"></i>
+      <span class="text-xs mt-1">Profile</span>
+    </button> -->
+  </div>
+
+</body>
+</html>

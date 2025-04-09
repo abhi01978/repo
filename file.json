@@ -1,0 +1,15 @@
+[
+    {
+      "title": "Awesome Cartoon",
+      "description": "This is a description of the awesome cartoon.",
+      "fileUrl": "/uploads/1234567890-awesome-cartoon.jpg",
+      "type": "image"
+    },
+    {
+      "title": "Funny Video",
+      "description": "This is a funny video that you will love.",
+      "fileUrl": "/uploads/1234567890-funny-video.mp4",
+      "type": "video"
+    }
+  ]
+  

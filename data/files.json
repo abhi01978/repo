@@ -1,0 +1,29 @@
+[
+ 
+  
+  
+  {
+    "title": "kkk",
+    "description": "kkkk",
+    "fileUrl": "/uploads/1744189010258-web designer.jpg",
+    "type": "image"
+  },
+  {
+    "title": "hello hello",
+    "description": "hello hello",
+    "fileUrl": "/uploads/1744189400701-web d.jpg",
+    "type": "image"
+  },
+  {
+    "title": "video ",
+    "description": "video",
+    "fileUrl": "/uploads/1744189429237-mov_bbb.mp4",
+    "type": "video"
+  },
+  {
+    "title": "hello kese ho dosto ",
+    "description": "me acha hu ap btao",
+    "fileUrl": "/uploads/1744189656830-Beautiful-Places-in-Europe-1.jpg.optimal.jpg",
+    "type": "image"
+  }
+]

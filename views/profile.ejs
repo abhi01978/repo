@@ -1,0 +1,85 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-center">
+      <h1 class="text-2xl font-bold mb-4">Welcome, <%= user.username %></h1>
+      <img src="<%= user.profileImage || '/images/default.jpg' %>" alt="Profile Image" class="rounded-full mb-4" width="150" />
+      <p>Email: <%= user.email %></p>
+      
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*,video/*" class="mt-4 border-2 border-blue-500" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Upload</button>
+      </form>
+
+      <a href="/logout" class="text-red-500 mt-4 inline-block">Logout</a>
+    </div>
+  </div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-center">
+      <h1 class="text-2xl font-bold mb-4">Welcome, <%= user.username %></h1>
+
+      <!-- Display profile image or video -->
+      <% if (user.profileImage.endsWith('.mp4') || user.profileImage.endsWith('.mov')) { %>
+        <video width="320" height="240" controls>
+          <source src="<%= user.profileImage %>" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      <% } else { %>
+        <img src="<%= user.profileImage %>" alt="Profile Image" class="rounded-full mb-4" width="150" />
+      <% } %>
+
+      <p>Email: <%= user.email %></p>
+
+      <!-- Image/Video Upload Form -->
+      <form action="/upload" method="POST" enctype="multipart/form-data" class="mt-4">
+        <!-- Title Input -->
+        <div class="mb-4">
+          <label for="title" class="text-lg text-gray-200">Title:</label>
+          <input type="text" name="title" required placeholder="Enter title" 
+            class="w-full p-2 mt-2 bg-gray-700 text-white border-2 border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <!-- Description Textarea -->
+        <div class="mb-4">
+          <label for="description" class="text-lg text-gray-200">Description:</label>
+          <textarea name="description" required placeholder="Enter description" 
+            class="w-full p-2 mt-2 bg-gray-700 text-white border-2 border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <!-- File Upload -->
+        <div class="mb-4">
+          <label for="file" class="text-lg text-gray-200">Upload File:</label>
+          <input type="file" name="file" accept="image/*,video/*" required
+            class="w-full p-2 mt-2 bg-gray-700 text-white border-2 border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400 w-full">Upload</button>
+      </form>
+
+      <a href="/logout" class="text-red-500 mt-4 inline-block">Logout</a>
+    </div>
+  </div>
+</body>
+</html>

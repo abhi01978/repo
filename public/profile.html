@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+  <div class="flex justify-center items-center min-h-screen">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg w-96 text-center">
+      <h1 class="text-2xl font-bold mb-4">Welcome, <%= user.username %></h1>
+      <img src="<%= user.profileImage || '/images/default.jpg' %>" alt="Profile Image" class="rounded-full mb-4" width="150" />
+      <p>Email: <%= user.email %></p>
+      
+      <!-- Image/Video Upload Form -->
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*,video/*" class="mt-4 border-2 border-blue-500" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Upload</button>
+      </form>
+
+      <a href="/logout" class="text-red-500 mt-4 inline-block">Logout</a>
+    </div>
+  </div>
+</body>
+</html>

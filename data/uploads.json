@@ -1,0 +1,13 @@
+[
+    {
+      "name": "Sample Image",
+      "url": "/uploads/sample-image.jpg",
+      "type": "image"
+    },
+    {
+      "name": "Sample Video",
+      "url": "/uploads/sample-video.mp4",
+      "type": "video"
+    }
+  ]
+  
